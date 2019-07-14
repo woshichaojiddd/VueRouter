@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+
+        <router-link to="/user/1">user1</router-link>
+        <router-link to="/user/2">user2</router-link>
+        <router-link to="/user/3">user3</router-link>
+        <router-link to="/user/4">user4</router-link>
+        <router-view></router-view>
+    </div>
+</body>
+<script src="lib/vue_2.5.22.js"></script>
+<script src="lib/vue-router_3.0.2.js"></script>
+
+
+
+<script>
+    // 动态路由匹配传参
+
+    // 方法1
+    // var User = {
+    //     template: '<h1>用户:{{$route.params.id}}</h1>'
+    // }
+
+    // var myrouter = new VueRouter({
+    //     routes: [{
+    //         path: '/user/:id',
+    //         component: User
+    //     }]
+    // })
+
+    // 方法2 单纯传递id 用的较多
+    // var User = {
+    //     props: ['id'],
+    //     template: ` <h1>用户:{{id}}</h1>`
+    // }
+
+    // var myrouter = new VueRouter({
+    //     routes: [{
+    //         path: '/user/:id',
+    //         component: User,
+    //         // props: true
+    //         props: true
+    //     }]
+    // })
+
+    // 方法3 传递静态数据
+    // var User = {
+    //     props: ['uname', 'age'],
+    //     template: `
+    //     <div>
+    //         <h1>姓名:{{uname}}</h1>
+    //         <h1>年龄:{{age}}</h1>
+    //     </div>
+    //     `
+    // }
+
+    // var myrouter = new VueRouter({
+    //     routes: [{
+    //         path: '/user/:id',
+    //         component: User,
+    //         // props: true
+    //         props: {
+    //             uname: 'ls',
+    //             age: 20
+    //         }
+    //     }]
+    // })
+
+    // 方法4 动态(id)静态数据结合传递
+    var User = {
+        props: ['id', 'uname', 'age'],
+        template: `
+        <div>
+            <h1>用户:{{id}}</h1>
+            <h1>姓名:{{uname}}</h1>
+            <h1>年龄:{{age}}</h1>
+        </div>
+        `
+    }
+
+    var myrouter = new VueRouter({
+        routes: [{
+            path: '/user/:id',
+            component: User,
+            // props: 是一个函数 优化写法
+            props: $route =>
+                ({
+                    uname: 'ls',
+                    age: 20,
+                    id: $route.params.id
+                })
+
+        }]
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        router: myrouter
+
+    })
+</script>
+
+</html>

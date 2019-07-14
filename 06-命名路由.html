@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+
+        <router-link to="/user/1">user1</router-link>
+        <router-link :to="{name:'user',params:{id:2}}">user2</router-link>
+        <router-link to="/user/3">user3</router-link>
+        <router-link to="/user/4">user4</router-link>
+        <router-view></router-view>
+    </div>
+</body>
+<script src="lib/vue_2.5.22.js"></script>
+<script src="lib/vue-router_3.0.2.js"></script>
+
+
+
+<script>
+    // 命名路由:
+    // 1.给路由规则起个名字
+    // 2.修改router-link书写格式
+    var User = {
+        props: ['id', 'uname', 'age'],
+        template: `
+        <div>
+            <h1>用户:{{id}}</h1>
+            <h1>姓名:{{uname}}</h1>
+            <h1>年龄:{{age}}</h1>
+        </div>
+        `
+    }
+
+    var myrouter = new VueRouter({
+        routes: [{
+            name: 'user',
+            path: '/user/:id',
+            component: User,
+            // props: 是一个函数 优化写法
+            props: $route =>
+                ({
+                    uname: 'ls',
+                    age: 20,
+                    id: $route.params.id
+                })
+        }]
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        router: myrouter
+
+    })
+</script>
+
+</html>
